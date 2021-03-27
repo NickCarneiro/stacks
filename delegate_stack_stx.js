@@ -8,15 +8,15 @@ import {StacksMainnet } from '@stacks/network';
 
 const network = new StacksMainnet();
 
-const principalAddress = 'XXXXXX'
+const principalAddress = 'XXXXXX' // the STX address of the delegator
 const stacker = standardPrincipalCV(principalAddress);
-const amountUstx = uintCV('XXX')
+const amountUstx = uintCV('XXX') // number of microstacks to lock
 const poxAddress = tupleCV({
-    'hashBytes': bufferCVFromString('XXXXX'),
+    'hashBytes': bufferCVFromString('XXXXX'),  // the reward Bitcoin address of the delegator
     'version': bufferCVFromString('1')
 })
-const startBurnHt = uintCV('XXX')
-const lockPeriod = uintCV('XXX')
+const startBurnHt = uintCV('XXX') // the burnchain block height to begin lock
+const lockPeriod = uintCV('XXX') // number of cycles to lock
 
 const txOptions = {
     contractAddress: 'SP000000000000000000002Q6VF78',
@@ -29,7 +29,7 @@ const txOptions = {
         startBurnHt,
         lockPeriod
     ],
-    senderKey: 'XXXX',
+    senderKey: 'XXXX', // private key to sign transaction
     validateWithAbi: true,
     network
 };
