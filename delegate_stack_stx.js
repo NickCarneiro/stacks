@@ -2,21 +2,25 @@ import {
     makeContractCall,
     broadcastTransaction,
     bufferCVFromString,
-    uintCV, tupleCV, standardPrincipalCV
+    uintCV, tupleCV, standardPrincipalCV, bufferCV
 } from '@stacks/transactions';
+import btc from 'bitcoinjs-lib';
 import {StacksMainnet } from '@stacks/network';
+import BN from "bn.js";
 
 const network = new StacksMainnet();
 
-const principalAddress = 'XXXXXX' // the STX address of the delegator
+const principalAddress = 'SPQ0J759DPCZKS9CVJHKVDCB86GMDFWRTNM1GKGB' // the STX address of the delegator
 const stacker = standardPrincipalCV(principalAddress);
-const amountUstx = uintCV('XXX') // number of microstacks to lock
+const amountUstx = uintCV('447608000000') // number of microstacks to lock
+const btcHashString = btc.address.fromBase58Check('16W6L8V68GVczYWGexTPRA4bCB2Y6KJEGM').hash
+console.log(btcHashString)
 const poxAddress = tupleCV({
-    'hashBytes': bufferCVFromString('XXXXX'),  // the reward Bitcoin address of the delegator
-    'version': bufferCVFromString('1')
+    'hashbytes': bufferCV(btcHashString),  // the reward Bitcoin address of the delegator
+    'version': bufferCV(new BN(0, 10).toArrayLike(Buffer))
 })
-const startBurnHt = uintCV('XXX') // the burnchain block height to begin lock
-const lockPeriod = uintCV('XXX') // number of cycles to lock
+const startBurnHt = uintCV('678550') // the burnchain block height to begin lock
+const lockPeriod = uintCV('10') // number of cycles to lock
 
 const txOptions = {
     contractAddress: 'SP000000000000000000002Q6VF78',
@@ -29,7 +33,7 @@ const txOptions = {
         startBurnHt,
         lockPeriod
     ],
-    senderKey: 'XXXX', // private key to sign transaction
+    senderKey: '', // private key to sign transaction
     validateWithAbi: true,
     network
 };
